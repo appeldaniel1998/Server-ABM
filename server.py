@@ -24,6 +24,9 @@ def requestHandler(queryType, params):
             clients.append(doc.to_dict())
         retStr = json.dumps(clients)
         return retStr
+    elif queryType == "getSingleClient":
+        id = params["id"]
+        users_ref = database.collection(u'Clients').document(id).get()
     elif queryType == "getAllAppointments":
         appointments = []
         users_ref = database.collection_group(u'Client Appointments').order_by(u'date')
