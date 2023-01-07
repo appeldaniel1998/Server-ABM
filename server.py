@@ -24,9 +24,15 @@ def requestHandler(queryType, params):
             clients.append(doc.to_dict())
         retStr = json.dumps(clients)
         return retStr
+
     elif queryType == "getSingleClient":
         id = params["id"]
         users_ref = database.collection(u'Clients').document(id).get()
+        doc = users_ref.stream()
+        client=doc.to_dict()
+        retStr = json.dumps(client)
+        return retStr
+
     elif queryType == "getAllAppointments":
         appointments = []
         users_ref = database.collection_group(u'Client Appointments').order_by(u'date')
@@ -35,12 +41,24 @@ def requestHandler(queryType, params):
             appointments.append(doc.to_dict())
         retStr = json.dumps(appointments)
         return retStr
-    elif queryType == "getSingleClient":
-        pass
+
     elif queryType == "getAllAppointmentTypes":
-        pass
+        appointmentsTypes = []
+        users_ref = database.collection_group(u'Appointments Types')
+        docs = users_ref.stream()
+        for doc in docs:
+            appointmentsTypes.append(doc.to_dict())
+        retStr = json.dumps(appointmentsTypes)
+        return retStr
+
     elif queryType == "getAllProducts":
-        pass
+        products = []
+        users_ref = database.collection_group(u'Products')
+        docs = users_ref.stream()
+        for doc in docs:
+            products.append(doc.to_dict())
+        retStr = json.dumps(products)
+        return retStr
 
 
 @app.route('/', methods=['GET', 'POST'])
